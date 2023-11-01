@@ -1,32 +1,37 @@
-function intToRoman(num) {
-    const romanNumerals = [
-        { value: 1000, symbol: 'M' },
-        { value: 900, symbol: 'CM' },
-        { value: 500, symbol: 'D' },
-        { value: 400, symbol: 'CD' },
-        { value: 100, symbol: 'C' },
-        { value: 90, symbol: 'XC' },
-        { value: 50, symbol: 'L' },
-        { value: 40, symbol: 'XL' },
-        { value: 10, symbol: 'X' },
-        { value: 9, symbol: 'IX' },
-        { value: 5, symbol: 'V' },
-        { value: 4, symbol: 'IV' },
-        { value: 1, symbol: 'I' }
-    ];
+function convertToRoman(num) {
+  	const obj = {
+      0:['M',1000], 
+      1:['D', 500], 
+      2:['C', 100], 
+      3:['L', 50], 
+      4:['X', 10], 
+      5:['V', 5], 
+      6:['I', 1]
+    };
 
-    let result = '';
-
-    for (let i = 0; i < romanNumerals.length; i++) {
-        while (num >= romanNumerals[i].value) {
-            result += romanNumerals[i].symbol;
-            num -= romanNumerals[i].value;
-        }
+  //your code here
+ let result = '';
+  let currentNum = num;
+  for (let i = 0; i < 7; i++) {
+    let count = Math.floor(currentNum / obj[i][1]);
+    if (count > 0) {
+      result += obj[i][0].repeat(count);
+      currentNum %= obj[i][1];
     }
-
-    return result;
+    if (i % 2 === 0 && i < 6 && currentNum >= obj[i + 2][1] - obj[i + 2][1] / 10) {
+      result += obj[i + 2][0] + obj[i][0];
+      currentNum -= obj[i + 2][1] - obj[i];
+    }
+    if (i % 2 === 1 && i < 5 && currentNum >= obj[i + 1][1] - obj[i + 1][1] / 10) {
+      result += obj[i + 1][0] + obj[i - 1][0];
+      currentNum -= obj[i + 1][1] - obj[i - 1][1];
+    }
+  }
+  return result;
 }
 
-// Example usage:
-console.log(intToRoman(14)); // Output: XIV
-console.log(intToRoman(798)); // Output: DCCXCVIII
+
+
+
+// do not edit below this line
+module.exports = convertToRoman
